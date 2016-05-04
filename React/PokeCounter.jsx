@@ -1,27 +1,36 @@
+const STRING_OFFSET = 9
+const LEVEL_ONE = 5
+const LEVEL_TWO = 10
+const LEVEL_THREE = 15
+const RESET_THRESHOLD = 20
+
+// Return path to image based on ranges
 function levelChecker (clicks) {
   var pic
-  if (clicks >= 20) {
+  if (clicks >= RESET_THRESHOLD) {
     // X evolve Charizard
     pic = 'Pictures/charizard-max.png'
-  } else if (clicks >= 15) {
+  } else if (clicks >= LEVEL_THREE) {
     // Charizard
-    // pic = "http://cdn.bulbagarden.net/upload/thumb/7/7e/006Charizard.png/250px-006Charizard.png"
     pic = 'Pictures/charizard.png'
-  } else if (clicks >= 10) {
+  } else if (clicks >= LEVEL_TWO) {
     // Charmeleon
-    // pic = "http://cdn.bulbagarden.net/upload/thumb/4/4a/005Charmeleon.png/250px-005Charmeleon.png"
     pic = 'Pictures/charmeleon.png'
-  } else if (clicks >= 5) {
+  } else if (clicks >= LEVEL_ONE) {
     // Charmander
-    // pic = "http://orig13.deviantart.net/d44b/f/2011/120/8/6/pokemon___charmander_by_lilnutta10-d2vr4ov.jpg"
     pic = 'Pictures/charmander.png'
   } else {
     // Pokeball
-    // pic = "http://vignette2.wikia.nocookie.net/toonmage/images/b/b7/Poke'ball.png/revision/latest?cb=20110306114739"
     pic = 'Pictures/pokeball.png'
   }
 
   return pic
+}
+
+function getPictureName (path) {
+	console.log(path.length)
+  // Removes 'Pictures/' from path to get name
+  return path.substr(STRING_OFFSET, (path.length - 4))
 }
 
 var PokeContainer = React.createClass({
@@ -65,6 +74,7 @@ var PokeCounter = React.createClass({
   getInitialState: function () {
     return {
       numClicks: 0,
+      hp: 10,
     }
   },
 
@@ -82,10 +92,13 @@ var PokeCounter = React.createClass({
 
   render: function () {
     var pic = levelChecker(this.state.numClicks)
+    var picName = getPictureName(pic)
     return (
     <div>
-      PokeCounter Prop Clicks:
-      {this.state.numClicks}
+      <h3>Info:</h3>
+      <p>Name: {picName}</p>
+      <p>EXP (Clicks): {this.state.numClicks}</p>
+      <p>HP: {this.state.hp}</p>
       <button onClick={this.onPokeClick}>
         Press
       </button>
