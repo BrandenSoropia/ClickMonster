@@ -6,11 +6,11 @@ function levelChecker(clicks) {
 	} else if (clicks >= 15) {
 	  // Charizard
 	  // pic = "http://cdn.bulbagarden.net/upload/thumb/7/7e/006Charizard.png/250px-006Charizard.png";
-	  pic = "Pictures/Charizard.png";
+	  pic = "Pictures/charizard.png";
 	} else if (clicks >= 10) {
 	  // Charmeleon
 	  // pic = "http://cdn.bulbagarden.net/upload/thumb/4/4a/005Charmeleon.png/250px-005Charmeleon.png";
-	  pic = "Pictures/Charmeleon.png";
+	  pic = "Pictures/charmeleon.png";
 	} else if (clicks >= 5) {
 	  // Charmander
 	  // pic = "http://orig13.deviantart.net/d44b/f/2011/120/8/6/pokemon___charmander_by_lilnutta10-d2vr4ov.jpg";
