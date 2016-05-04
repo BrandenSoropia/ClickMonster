@@ -8,10 +8,10 @@ app.use('/Scripts', express.static(__dirname + '/Scripts'));
 app.use(express.static(__dirname + '/'));
 
 app.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'index.html'));
+  res.sendFile(path.join(__dirname+'/index.html'));
   //__dirname : It will resolve to your project folder.
 });
 
 app.listen(5000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Example app listening on port 5000!');
 });
