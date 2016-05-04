@@ -33,20 +33,21 @@ function getPictureName (path) {
   return path.substr(STRING_OFFSET, (path.length - 4))
 }
 
-function updateHP (currentHP) {
+function updateHP (currentStates) {
   // Deal between 1 - 10 damage
-  var resultHP = currentHP - Math.floor((Math.random() * 10) + 1)
-  var resultStatus = isFainted(resultHP)
+  var resultHP = currentStates.hp - Math.floor((Math.random() * 10) + 1)
+  var resultStatus = isFainted(resultHP, currentStates)
   return [resultHP, resultStatus]
 }
 
-function isFainted(currentHP) {
-	console.log('Checking HP if fainted. Evaluating HP: ' + currentHP)
-	if (currentHP <= 0) {
-		return "Fainted"
-	}
+function isFainted (currentHP, currentStates) {
+  console.log('Checking HP if fainted. Evaluating HP: ' + currentHP)
+  if (currentHP <= 0) {
+    console.log('Pokemon fainted!')
+    return 'Fainted'
+  }
 
-	return "Alive"
+  return 'Alive'
 }
 
 var PokeContainer = React.createClass({
@@ -54,6 +55,10 @@ var PokeContainer = React.createClass({
     return {
       numMonsters: 0,
     }
+  },
+
+  componentWillUpdate: function (nextProps, nextState) {
+    console.log('Change in numMonsters: ' + this.state.numMonsters + ' -> ' + nextState.numMonsters)
   },
 
   onGetMonster: function (event) {
@@ -69,14 +74,22 @@ var PokeContainer = React.createClass({
     }
   },
 
+  onDeleteMonster: function (event) {
+    console.log('Changing numMonsters. Current numMonsters: ' + this.state.numMonsters)
+    this.setState({
+      numMonsters: this.state.numMonsters - 1,
+    })
+    console.log('After changing, current numMonsters: ' + this.state.numMonsters)
+  },
+
   render: function () {
     var monsters = []
     for (var i = 0; i < this.state.numMonsters; i++) {
-      monsters.push(<PokeCounter className='PokeCounter' key={i} />)
+      monsters.push(<PokeCounter className='PokeCounter' onClick={this.onDeleteMonster} key={i} />)
     }
     return (
-    <div>
-      <h3>Poke-Container numMonsters: {monsters.length}</h3>
+    <div className='PokeContainer'>
+      <h3>PokeContainer numMonsters: {monsters.length}</h3>
       {monsters}
       <button onClick={this.onGetMonster}>
         Get Monster
@@ -92,21 +105,30 @@ var PokeCounter = React.createClass({
       numClicks: 0,
       // Give between 50 - 100 HP
       hp: Math.floor(((Math.random() * 10) * 5) + 50),
-      fainted: "Alive",
+      fainted: 'Alive',
     }
   },
 
+  // Runs after it is decided that update is allowed (shouldComponentUpdate returns true)
   componentWillUpdate: function (nextProps, nextState) {
-    // Check if only numClicks changed
+    // Report numClicks if changed
     if (this.state.numClicks != nextState.numClicks) {
       console.log('numClicks changed: ' + this.state.numClicks + ' -> ' + nextState.numClicks)
     }
+    // Report hp if changed
     if (this.state.hp != nextState.hp) {
       console.log('hp changed: ' + this.state.hp + ' -> ' + nextState.hp)
     }
   },
 
-  componentDidUpdate: function (prevProps, prevState) {},
+	componentWillUnmount() {
+      this.props.onClick()
+	},
+
+  // Runs after render
+  // componentDidUpdate: function (prevProps, prevState) {
+  //       this.props.fainted === "Fainted" ? this.props.onClick() : null
+  // },
 
   onPokeClick: function (event) {
     if (this.state.numClicks === 24) {
@@ -119,44 +141,52 @@ var PokeCounter = React.createClass({
       })
     }
     var resultHP, resultStatus
-    [resultHP, resultStatus] = updateHP(this.state.hp)
+      ;[resultHP, resultStatus] = updateHP(this.state)
     // Update HP and check if fainted
     this.setState({
       hp: resultHP,
       fainted: resultStatus,
-      // fainted: isFainted(this.state.hp) evaluates before HP changes for some reason, late faint
+    // fainted: isFainted(this.state.hp) evaluates before HP changes for some reason, late faint
     })
   },
 
   render: function () {
     var pic = levelChecker(this.state.numClicks)
     var picName = getPictureName(pic)
-    return (
-    <div>
-      <h3>Info:</h3>
-      <p>
-        Name:
-        {picName}
-      </p>
-      <p>
-        ID:
-        {this.key}
-      </p>
-      <p>
-        EXP (Clicks):
-        {this.state.numClicks}
-      </p>
-      <p>
-        HP:
-        {this.state.hp}
-        ({this.state.fainted})
-      </p>
-      <button onClick={this.onPokeClick}>
-        Train
-      </button>
-      <img src={pic} onClick={this.onPokeClick} />
-    </div>
-    )
+    // Remove Pokemon from view if Fainted
+    if (this.state.fainted === 'Alive') {
+      return (
+      <div className='PokeCounter'>
+        <h3>Info:</h3>
+        <p>
+          Name:
+          {picName}
+        </p>
+        <p>
+          ID:
+          {this.key}
+        </p>
+        <p>
+          EXP (Clicks):
+          {this.state.numClicks}
+        </p>
+        <p>
+          HP:
+          {this.state.hp} (
+          {this.state.fainted})
+        </p>
+        <button onClick={this.onPokeClick}>
+          Train
+        </button>
+        <button onClick={this.props.onClick}>
+          Delete Monster
+        </button>
+        <img src={pic} onClick={this.onPokeClick} />
+      </div>
+      )
+    } else {
+      return null
+    }
   }
 })
 
