@@ -102,6 +102,7 @@ var PokeContainer = React.createClass({
 var PokeCounter = React.createClass({
   getInitialState: function () {
     return {
+      isRemoved: false,
       numClicks: 0,
       // Give between 50 - 100 HP
       hp: Math.floor(((Math.random() * 10) * 5) + 50),
@@ -121,9 +122,9 @@ var PokeCounter = React.createClass({
     }
   },
 
-	componentWillUnmount() {
-      this.props.onClick()
-	},
+  componentWillUnmount: function () {
+    this.props.onClick()
+  },
 
   // Runs after render
   // componentDidUpdate: function (prevProps, prevState) {
@@ -150,11 +151,17 @@ var PokeCounter = React.createClass({
     })
   },
 
+  onDelete: function (event) {
+    this.setState({
+      isRemoved: true,
+    })
+  },
+
   render: function () {
     var pic = levelChecker(this.state.numClicks)
     var picName = getPictureName(pic)
     // Remove Pokemon from view if Fainted
-    if (this.state.fainted === 'Alive') {
+    if (this.state.fainted === 'Alive' || this.state.isRemoved) {
       return (
       <div className='PokeCounter'>
         <h3>Info:</h3>
@@ -178,7 +185,7 @@ var PokeCounter = React.createClass({
         <button onClick={this.onPokeClick}>
           Train
         </button>
-        <button onClick={this.props.onClick}>
+        <button onClick={this.onDelete}>
           Delete Monster
         </button>
         <img src={pic} onClick={this.onPokeClick} />
