@@ -1,14 +1,15 @@
 import React from 'react'
 // import ReactDOM from 'react-dom'
 import PokeSlot from './PokeSlot'
-const EVOLUTION_ONE_MIN_HP = 50
-const EVOLUTION_ONE_MAX_HP = 100
-const DAMAGE_MIN = 1
-const DAMAGE_MAX = 10
-const LEVEL_ONE = 5
-const LEVEL_TWO = 10
-const LEVEL_THREE = 15
-const MAX_LEVEL = 20
+import {EVOLUTION_ONE_MIN_HP, EVOLUTION_ONE_MAX_HP, DAMAGE_MIN, DAMAGE_MAX, LEVEL_ONE, LEVEL_TWO, LEVEL_THREE, MAX_LEVEL} from '../constants'
+// const EVOLUTION_ONE_MIN_HP = 50
+// const EVOLUTION_ONE_MAX_HP = 100
+// const DAMAGE_MIN = 1
+// const DAMAGE_MAX = 10
+// const LEVEL_ONE = 5
+// const LEVEL_TWO = 10
+// const LEVEL_THREE = 15
+// const MAX_LEVEL = 20
 
 var PokeContainer = React.createClass({
   statics: {
@@ -81,6 +82,7 @@ var PokeContainer = React.createClass({
     },
 
     changeImagePathBasedOnExperiencePionts: function (pokeStatus) {
+      console.log('~ changeImagePathBasedOnExperiencePionts called ~')
       var currentExperiencePoints = pokeStatus.experiencePoints
       var pic
       if (currentExperiencePoints >= MAX_LEVEL) {
@@ -96,6 +98,7 @@ var PokeContainer = React.createClass({
         // Charmander
         pic = 'Pictures/charmander.png'
       }
+      console.log('Picture called: ' + pic)
     }
   },
 

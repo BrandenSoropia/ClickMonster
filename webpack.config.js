@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['./React/app.js', './React/PokeContainer.js', './React/PokeSlot.js'],
+  entry: ['./React/app.js', './React/PokeContainer.js', './React/PokeSlot.js', './constants.js'],
   output: {
     path: __dirname,
     filename: 'bundle.js'

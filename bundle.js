@@ -46,7 +46,8 @@
 
 	__webpack_require__(1);
 	__webpack_require__(160);
-	module.exports = __webpack_require__(161);
+	__webpack_require__(161);
+	module.exports = __webpack_require__(162);
 
 
 /***/ },
@@ -19767,19 +19768,20 @@
 
 	var _PokeSlot2 = _interopRequireDefault(_PokeSlot);
 
+	var _constants = __webpack_require__(162);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var EVOLUTION_ONE_MIN_HP = 50;
+	// const EVOLUTION_ONE_MIN_HP = 50
+	// const EVOLUTION_ONE_MAX_HP = 100
+	// const DAMAGE_MIN = 1
+	// const DAMAGE_MAX = 10
+	// const LEVEL_ONE = 5
+	// const LEVEL_TWO = 10
+	// const LEVEL_THREE = 15
+	// const MAX_LEVEL = 20
+
 	// import ReactDOM from 'react-dom'
-
-	var EVOLUTION_ONE_MAX_HP = 100;
-	var DAMAGE_MIN = 1;
-	var DAMAGE_MAX = 10;
-	var LEVEL_ONE = 5;
-	var LEVEL_TWO = 10;
-	var LEVEL_THREE = 15;
-	var MAX_LEVEL = 20;
-
 	var PokeContainer = _react2.default.createClass({
 	  displayName: 'PokeContainer',
 
@@ -19838,7 +19840,7 @@
 	    trainPokemon: function trainPokemon(pokeStatus) {
 	      console.log('~ trainPokemon called ~');
 	      console.log('Recieved Pokemon name: ' + pokeStatus.pokemonName + ' containerIdx: ' + pokeStatus.containerArrayIdx);
-	      var damage = PokeContainer.generateRandomHitpoints(DAMAGE_MIN, DAMAGE_MAX);
+	      var damage = PokeContainer.generateRandomHitpoints(_constants.DAMAGE_MIN, _constants.DAMAGE_MAX);
 	      PokeContainer.changeValueOfKeyValuePair(pokeStatus, 'hitpoints', pokeStatus.hitpoints - damage); // update hitpoints
 	      PokeContainer.changeValueOfKeyValuePair(pokeStatus, 'experiencePoints', pokeStatus.experiencePoints + 1); // Update experiencePoints
 	    },
@@ -19853,21 +19855,23 @@
 	    },
 
 	    changeImagePathBasedOnExperiencePionts: function changeImagePathBasedOnExperiencePionts(pokeStatus) {
+	      console.log('~ changeImagePathBasedOnExperiencePionts called ~');
 	      var currentExperiencePoints = pokeStatus.experiencePoints;
 	      var pic;
-	      if (currentExperiencePoints >= MAX_LEVEL) {
+	      if (currentExperiencePoints >= _constants.MAX_LEVEL) {
 	        // X evolve Charizard
 	        pic = 'Pictures/charizard-max.png';
-	      } else if (currentExperiencePoints >= LEVEL_THREE) {
+	      } else if (currentExperiencePoints >= _constants.LEVEL_THREE) {
 	        // Charizard
 	        pic = 'Pictures/charizard.png';
-	      } else if (currentExperiencePoints >= LEVEL_TWO) {
+	      } else if (currentExperiencePoints >= _constants.LEVEL_TWO) {
 	        // Charmeleon
 	        pic = 'Pictures/charmeleon.png';
 	      } else {
 	        // Charmander
 	        pic = 'Pictures/charmander.png';
 	      }
+	      console.log('Picture called: ' + pic);
 	    }
 	  },
 
@@ -19897,7 +19901,7 @@
 	    console.log('OnActivateSlot event: ' + event);
 	    console.log('OnActivateSlot containerIdx: ' + containerIdx);
 	    // Generate Pokemon
-	    var generatedPokemon = PokeContainer.generatePokeStatusStruct(containerIdx, EVOLUTION_ONE_MIN_HP, EVOLUTION_ONE_MAX_HP);
+	    var generatedPokemon = PokeContainer.generatePokeStatusStruct(containerIdx, _constants.EVOLUTION_ONE_MIN_HP, _constants.EVOLUTION_ONE_MAX_HP);
 	    console.log('Generated: ' + generatedPokemon.pokemonName);
 	    // Change to active
 	    PokeContainer.changeValueOfKeyValuePair(generatedPokemon, 'active', true);
@@ -20053,6 +20057,21 @@
 	}); // export default class PokeSlot extends React.createClass({
 
 	exports.default = PokeSlot;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var EVOLUTION_ONE_MIN_HP = 50;
+	var EVOLUTION_ONE_MAX_HP = 100;
+	var DAMAGE_MIN = 1;
+	var DAMAGE_MAX = 10;
+	var LEVEL_ONE = 5;
+	var LEVEL_TWO = 10;
+	var LEVEL_THREE = 15;
+	var MAX_LEVEL = 20;
 
 /***/ }
 /******/ ]);
